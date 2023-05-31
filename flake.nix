@@ -24,7 +24,8 @@
           packages = with pkgs; [
             nodejs-18_x # Node.js 18, plus npm, npx, and corepack
             gradle
-            jdk18
+            maven
+            openjdk
           ];
         };
       });
