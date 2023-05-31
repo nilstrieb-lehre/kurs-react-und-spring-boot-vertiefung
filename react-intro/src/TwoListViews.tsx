@@ -66,9 +66,7 @@ function SingleMoveButton({
         const toMove = selectedItems
           .filter((item) => fromList.items[item] !== undefined)
           .map((item) => fromList.items[item]);
-        fromList.setItems(toList.items.concat(toMove));
-
-        console.log(selectedItems, toMove);
+        toList.setItems(toList.items.concat(toMove));
 
         const tempFromList = fromList.items;
         for (let i = 0; i < selectedItems.length; ++i) {
