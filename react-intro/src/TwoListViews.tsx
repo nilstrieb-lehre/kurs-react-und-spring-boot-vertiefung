@@ -1,28 +1,42 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
 
-function CarList({
-  list,
-  active,
-  setActive,
-}: {
-  list: string[];
+type List = {
+  items: string[];
+  setItems: (items: string[]) => void;
   active: number[];
   setActive: (active: number[]) => void;
-}) {
+};
+
+function useList(defaultItems: string[]): List {
+  const [items, setItems] = useState(defaultItems);
+  const [active, setActive] = useState<number[]>([]);
+
+  return useMemo(
+    () => ({
+      items,
+      setItems,
+      active,
+      setActive,
+    }),
+    [items, setItems, active, setActive]
+  );
+}
+
+function CarList({ list }: { list: List }) {
   return (
     <ListGroup>
-      {list.map((item, i) => (
+      {list.items.map((item, i) => (
         <ListGroup.Item
-          active={active.includes(i)}
+          active={list.active.includes(i)}
           onClick={() => {
-            const tempList = [...active];
-            if (active.includes(i)) {
+            const tempList = [...list.active];
+            if (list.active.includes(i)) {
               tempList.splice(i, 1);
             } else {
               tempList.push(i);
             }
-            setActive(tempList);
+            list.setActive(tempList);
           }}
           key={item}
         >
@@ -34,112 +48,86 @@ function CarList({
 }
 
 function SingleMoveButton({
-  isLeft,
-  active,
-  setActive,
+  text,
   fromList,
   toList,
-  setFromList,
-  setToList,
 }: {
-  isLeft: boolean;
-  active: number[];
-  setActive: (active: number[]) => void;
-  fromList: string[];
-  toList: string[];
-  setFromList: (list: string[]) => void;
-  setToList: (list: string[]) => void;
+  text: string;
+  fromList: List;
+  toList: List;
 }) {
   return (
     <Button
       onClick={() => {
-        const selectedItems = [...active];
+        const selectedItems = [...fromList.active];
         // We sort the items has they have to be in order for the removal.
         selectedItems.sort((a, b) => a - b);
 
         const toMove = selectedItems
-          .filter((item) => fromList[item] !== undefined)
-          .map((item) => fromList[item]);
-        setToList(toList.concat(toMove));
+          .filter((item) => fromList.items[item] !== undefined)
+          .map((item) => fromList.items[item]);
+        fromList.setItems(toList.items.concat(toMove));
 
         console.log(selectedItems, toMove);
 
-        const tempFromList = fromList;
+        const tempFromList = fromList.items;
         for (let i = 0; i < selectedItems.length; ++i) {
           const item = selectedItems[i];
           // As we move through the array, we delete items, which shifts each item one back.
           // -i accounts for that.
           tempFromList.splice(item - i, 1);
         }
-        setFromList(tempFromList);
+        fromList.setItems(tempFromList);
 
-        setActive([]);
+        fromList.setActive([]);
       }}
     >
-      {isLeft ? "<" : ">"}
+      {text}
     </Button>
   );
 }
 
 function TwoListViews() {
-  const [list1, setList1] = useState([
+  const list1 = useList([
     "schnelles auto",
     "langsames auto",
     "corsins auto in trackmania",
   ]);
-  const [active1, setActive1] = useState<number[]>([]);
 
-  const [list2, setList2] = useState([
+  const list2 = useList([
     "rotes auto",
     "in die wand gefahrenes auto",
     "automatisches auto",
   ]);
-  const [active2, setActive2] = useState<number[]>([]);
 
   return (
     <Container>
       <Row>
         <Col>
-          <CarList list={list1} active={active1} setActive={setActive1} />
+          <CarList list={list1} />
         </Col>
         <Col sm={1}>
           <Row>
             <Button
               onClick={() => {
-                setList2(list2.concat(list1));
-                setList1([]);
+                list2.setItems(list2.items.concat(list1.items));
+                list1.setItems([]);
               }}
             >
               &gt;&gt;
             </Button>
           </Row>
           <Row>
-            <SingleMoveButton
-              isLeft={false}
-              active={active1}
-              setActive={setActive1}
-              fromList={list1}
-              toList={list2}
-              setFromList={setList1}
-              setToList={setList2}
-            />
+            <SingleMoveButton text=">" fromList={list1} toList={list2} />
           </Row>
           <Row>
-            <SingleMoveButton
-              isLeft={true}
-              active={active2}
-              setActive={setActive2}
-              fromList={list2}
-              toList={list1}
-              setFromList={setList2}
-              setToList={setList1}
-            />
+            <SingleMoveButton text="<" fromList={list2} toList={list1} />
           </Row>
           <Row>
             <Button
               onClick={() => {
-                setList1(list1.concat(list2));
-                setList2([]);
+                list1.setItems(list1.items.concat(list2.items));
+                list2.setItems([]);
               }}
             >
               &lt;&lt;
@@ -147,7 +135,7 @@ function TwoListViews() {
           </Row>
         </Col>
         <Col>
-          <CarList list={list2} active={active2} setActive={setActive2} />
+          <CarList list={list2} />
         </Col>
       </Row>
     </Container>
