@@ -9,3 +9,16 @@ export async function getWishlistItems() {
   if (response.ok) return response.json();
   throw response;
 }
+
+export type Trip = {
+  id: number;
+  title: string;
+  description: string;
+  startTrip: [number, number, number, number, number];
+  endTrip: [number, number, number, number, number];
+  meetings: Array<{
+    id: number;
+    title: string;
+    description: string;
+  }>;
+};

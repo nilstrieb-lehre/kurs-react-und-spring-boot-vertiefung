@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
+import { getWishlistItems } from "./components/tripsService";
 
 const initialWishlist = [
   {
@@ -59,8 +60,10 @@ const initialWishlist = [
 ];
 
 export default function Biztrips() {
+  const [wishlist, setWishlist] = useState(initialWishlist);
+
   useEffect(() => {
-    // state from fetch
+    getWishlistItems().then(setWishlist);
   }, []);
 
   return (
@@ -72,7 +75,7 @@ export default function Biztrips() {
           (8))
         </h4>
       </header>
-      <Wishlist />
+      <Wishlist wishlist={wishlist} />
       <TripList />
 
       <footer>@AXA 2023</footer>

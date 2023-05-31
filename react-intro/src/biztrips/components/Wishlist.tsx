@@ -1,7 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-// deconstruct props
-export default function Wishlist() {
+import { Trip } from "./tripsService";
+
+export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
   // as constant variant 2
 
   const empty = (
@@ -49,16 +50,9 @@ export default function Wishlist() {
                 </thead>
                 <tbody />
                 <tfoot>
-                  <tr>
-                    <th align="right" scope="col" />
-                    <th scope="col" />
-                    <th scope="col" />
-                    <th scope="col">
-                      <button className="btn btn-outline-danger">
-                        empty List
-                      </button>
-                    </th>
-                  </tr>
+                  {wishlist.length === 0
+                    ? empty
+                    : wishlist.map((trip) => <Wish trip={trip} />)}
                 </tfoot>
               </table>
             </div>
@@ -69,10 +63,21 @@ export default function Wishlist() {
   );
 }
 
-function Wish() {
+function padn2(num: number): string {
+  return `${num.toString().padStart(2, "0")}`;
+}
+
+function formatTime(time: Trip["startTrip"]): string {
+  const hours = ` ${padn2(time[3])}:${padn2(time[4])}`;
+  return `${time[0]}-${padn2(time[1])}-${padn2(time[2])} ${hours}`;
+}
+
+function Wish({ trip }: { trip: Trip }) {
   // deconstruct props
 
   // props
+
+  const start = trip.startTrip;
 
   return (
     <tr>
@@ -81,18 +86,18 @@ function Wish() {
           <div className="img-wrap">
             <img
               className="img-thumbnail img-xs"
-              src={"images/items/" + ".jpg"}
-              alt="img"
+              src={"images/items/" + trip.id + ".jpg"}
+              alt={trip.title}
             />
           </div>
           <figcaption className="media-body">
             <h6 className="h6" />
             <dl className="dlist-inline small">
-              <dt>Start: </dt>
+              <dt>Start: {formatTime(trip.startTrip)}</dt>
               <dd />
             </dl>
             <dl className="dlist-inline small">
-              <dt>End: </dt>
+              <dt>End: {formatTime(trip.endTrip)}</dt>
               <dd />
             </dl>
           </figcaption>
@@ -100,7 +105,7 @@ function Wish() {
       </td>
       <td>
         <span className="media-body">
-          <div />
+          <div>{trip.title}</div>
         </span>
       </td>
       <td>
@@ -111,7 +116,11 @@ function Wish() {
         </span>
       </td>
 
-      <td className="price-wrap price" />
+      <td className="price-wrap price">
+        <span className="media-body">
+          <div>{trip.description}</div>
+        </span>
+      </td>
       <td className="text-right">
         <button
           className="btn btn-outline-danger"
