@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 
-import "./App.css";
 import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
 
-let initialWishlist = [
+const initialWishlist = [
   {
     id: 1,
     title: "BT01",
@@ -60,7 +58,7 @@ let initialWishlist = [
   },
 ];
 
-export default function App() {
+export default function Biztrips() {
   useEffect(() => {
     // state from fetch
   }, []);

@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getBusinessTrips } from "./tripsService.js";
+import { getBusinessTrips } from "./tripsService.ts";
 
 // functional component ProductList, deconstruct props!
 function TripList() {

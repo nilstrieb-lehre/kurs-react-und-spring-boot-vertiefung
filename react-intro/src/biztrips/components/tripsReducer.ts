@@ -1,4 +1,4 @@
-export default function tripsReducer(wishlist, action) {
+export default function tripsReducer(wishlist: any, action: any) {
   switch (action.type) {
     case "empty":
       return [];

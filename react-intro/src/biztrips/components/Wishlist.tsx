@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 // deconstruct props
@@ -7,6 +6,8 @@ export default function Wishlist() {
 
   const empty = (
     <tr>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <td colSpan="4">
         {" "}
         <p className="alert alert-info">Wishlist of Businesstrips is empty</p>
@@ -24,15 +25,23 @@ export default function Wishlist() {
                 <thead className="text-muted">
                   <tr>
                     <th scope="col">Trip</th>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore */}
                     <th scope="col" width="200">
                       Title
                     </th>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore */}
                     <th scope="col" width="200">
                       Like
                     </th>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore */}
                     <th scope="col" width="120">
                       Description
                     </th>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore */}
                     <th scope="col" width="200" className="text-right">
                       Action
                     </th>

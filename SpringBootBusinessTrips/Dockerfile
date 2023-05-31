@@ -1,5 +1,5 @@
 # A two Stage Dockerfile with a build stage and a run -stage!
-FROM maven:3.6.3-jdk-11 as backend-build
+FROM docker.io/maven:3.6.3-jdk-11 as backend-build
 WORKDIR ./
 COPY pom.xml .
 ### Step 2 Copy the source and build the .jar
