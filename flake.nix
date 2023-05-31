@@ -26,6 +26,7 @@
             gradle
             maven
             openjdk
+            yarn
           ];
         };
       });
