@@ -24,7 +24,7 @@ function TwoListViews() {
             {list1.map((item, i) => (
               <ListGroup.Item
                 active={active1 == i}
-                onClick={() => setActive1(i)}
+                onClick={() => setActive1(active1 === i ? null : i)}
               >
                 {item}
               </ListGroup.Item>
@@ -88,7 +88,7 @@ function TwoListViews() {
             {list2.map((item, i) => (
               <ListGroup.Item
                 active={active2 == i}
-                onClick={() => setActive2(i)}
+                onClick={() => setActive2(active2 === i ? null : i)}
               >
                 {item}
               </ListGroup.Item>
