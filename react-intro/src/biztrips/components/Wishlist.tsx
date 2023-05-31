@@ -48,11 +48,22 @@ export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
                     </th>
                   </tr>
                 </thead>
-                <tbody />
-                <tfoot>
+                <tbody>
                   {wishlist.length === 0
                     ? empty
                     : wishlist.map((trip) => <Wish trip={trip} />)}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th align="right" scope="col" />
+                    <th scope="col" />
+                    <th scope="col" />
+                    <th scope="col">
+                      <button className="btn btn-outline-danger">
+                        empty List
+                      </button>
+                    </th>
+                  </tr>
                 </tfoot>
               </table>
             </div>
@@ -73,12 +84,6 @@ function formatTime(time: Trip["startTrip"]): string {
 }
 
 function Wish({ trip }: { trip: Trip }) {
-  // deconstruct props
-
-  // props
-
-  const start = trip.startTrip;
-
   return (
     <tr>
       <td>

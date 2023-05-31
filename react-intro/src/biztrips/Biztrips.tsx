@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
-import { getWishlistItems } from "./components/tripsService";
+import { Trip, getWishlistItems } from "./components/tripsService";
 
-const initialWishlist = [
+const initialWishlist: Trip[] = [
   {
     id: 1,
     title: "BT01",
@@ -79,15 +79,6 @@ export default function Biztrips() {
       <TripList />
 
       <footer>@AXA 2023</footer>
-    </div>
-  );
-}
-
-function WishlistTest() {
-  return (
-    <div className="container">
-      <header className="container h3">Wishlist-Test</header>
-      <ul />
     </div>
   );
 }
