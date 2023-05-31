@@ -4,7 +4,7 @@ import { getBusinessTrips, type Trip } from "./tripsService.ts";
 
 // functional component ProductList, deconstruct props!
 function TripList() {
-  const [trips, setTrips] = useState([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
   // State
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function TripList() {
         <h4 className="h4">Business Trips - Planned 2021</h4>
         <div className="row">
           {trips.map((trip) => (
-            <Trip trip={trip} />
+            <Trip key={trip.id} trip={trip} />
           ))}
         </div>
       </section>

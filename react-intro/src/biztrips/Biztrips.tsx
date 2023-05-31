@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
 import { Trip, getWishlistItems } from "./components/tripsService";
+import tripsReducer from "./components/tripsReducer";
 
 const initialWishlist: Trip[] = [
   {
@@ -60,10 +61,13 @@ const initialWishlist: Trip[] = [
 ];
 
 export default function Biztrips() {
-  const [wishlist, setWishlist] = useState(initialWishlist);
+  const [wishlist, wishlistDispatch] = useReducer(
+    tripsReducer,
+    initialWishlist
+  );
 
   useEffect(() => {
-    getWishlistItems().then(setWishlist);
+    getWishlistItems().then((data) => wishlistDispatch({ type: "set", data }));
   }, []);
 
   return (

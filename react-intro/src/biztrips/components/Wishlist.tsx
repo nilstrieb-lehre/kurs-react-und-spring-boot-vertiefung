@@ -3,8 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Trip } from "./tripsService";
 
 export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
-  // as constant variant 2
-
   const empty = (
     <tr>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -51,7 +49,9 @@ export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
                 <tbody>
                   {wishlist.length === 0
                     ? empty
-                    : wishlist.map((trip) => <Wish trip={trip} />)}
+                    : wishlist.map((trip) => (
+                        <Wish key={trip.id} trip={trip} />
+                      ))}
                 </tbody>
                 <tfoot>
                   <tr>

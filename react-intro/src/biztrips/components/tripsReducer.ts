@@ -1,16 +1,31 @@
-export default function tripsReducer(wishlist: any, action: any) {
+import { Reducer } from "react";
+import { Trip } from "./tripsService";
+
+type Action =
+  | { type: "empty" }
+  | { type: "set"; data: Trip[] }
+  | { type: "add" }
+  | { type: "deleteItem" };
+
+const tripsReducer: Reducer<Trip[], Action> = (wishlist, action): Trip[] => {
   switch (action.type) {
     case "empty":
       return [];
+    case "set":
+      return action.data;
     case "add":
       // deconstruing props
-      return null;
+      return [];
     case "deleteItem": {
       // deconstructing action
 
-      return null;
+      return [];
     }
-    default:
-      throw new Error("Unhandled action: " + action.type);
+    default: {
+      const unreachable = (_: never): never => _;
+      return unreachable(action);
+    }
   }
-}
+};
+
+export default tripsReducer;
