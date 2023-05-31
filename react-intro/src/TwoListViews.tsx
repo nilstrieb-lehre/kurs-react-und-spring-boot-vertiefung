@@ -30,13 +30,11 @@ function CarList({ list }: { list: List }) {
         <ListGroup.Item
           active={list.active.includes(i)}
           onClick={() => {
-            const tempList = [...list.active];
             if (list.active.includes(i)) {
-              tempList.splice(i, 1);
+              list.setActive(list.active.filter((item) => item != i));
             } else {
-              tempList.push(i);
+              list.setActive([...list.active, i]);
             }
-            list.setActive(tempList);
           }}
           key={item}
         >
