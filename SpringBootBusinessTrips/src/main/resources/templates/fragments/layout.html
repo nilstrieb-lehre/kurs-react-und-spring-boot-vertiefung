@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Customer-App</title>
+<!-- Required meta tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<!--     Fonts and icons     -->
+<link data-th-rel="stylesheet" type="text/css"
+	data-th-href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700,200|Material+Icons}" />
+
+<link data-th-href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link data-th-href="@{/webjars/font-awesome/css/fontawesome.min.css}"
+	rel="stylesheet" />
+<!-- Material Kit CSS CT -->
+<link data-th-href="@{/css/light-bootstrap-dashboard.css?v=2.0.1}"
+	rel="stylesheet" />
+<link data-th-href="@{/css/sc-admin-2.min.css}"
+	rel="stylesheet" />
+
+
+<link rel="stylesheet"
+	href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+</head>
+
+<body>
+	<div class="wrapper ">
+		<!--  fragments-sidebar-->
+		<div th:replace="fragments/fragments-sidebar :: sidebar"></div>
+		<div class="main-panel">
+			<!-- fragments-main-panel-navbar -->
+			<div
+				th:replace="fragments/fragments-main-panel-navbar :: main-panel-navbar"></div>
+			<!-- Main-Panel-Content -->
+			<div data-layout-fragment="content"></div>
+			<!-- fragments-main-panel-footer -->
+			<div
+				data-th-replace="fragments/fragments-main-panel-footer :: main-panel-footer"></div>
+		</div>
+	</div>
+	<!--   Core JS Files   -->
+	<script data-th-src="@{/webjars/jquery/jquery.min.js}"></script>
+	<!-- 	<script data-th-src="@{/webjars/jquery/jquery.dataTables.min.js}"></script> -->
+	<script data-th-src="@{/webjars/popper.js/popper.min.js}"></script>
+	<script data-th-src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
