@@ -39,7 +39,7 @@ const Datamuse: React.FC<unknown> = () => {
         <Button onClick={input}>search</Button>
         <ListGroup>
           {rhymes.map((rhyme) => (
-            <ListGroup.Item>{rhyme}</ListGroup.Item>
+            <ListGroup.Item key={rhyme}>{rhyme}</ListGroup.Item>
           ))}
         </ListGroup>
       </Row>
