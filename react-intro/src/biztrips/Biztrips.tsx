@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
@@ -79,8 +79,8 @@ export default function Biztrips() {
           (8))
         </h4>
       </header>
-      <Wishlist wishlist={wishlist} />
-      <TripList />
+      <Wishlist wishlist={wishlist} wishlistDispatch={wishlistDispatch} />
+      <TripList wishlistDispatch={wishlistDispatch} />
 
       <footer>@AXA 2023</footer>
     </div>

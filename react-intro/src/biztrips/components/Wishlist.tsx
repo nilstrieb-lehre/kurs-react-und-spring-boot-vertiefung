@@ -1,8 +1,15 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Trip } from "./tripsService";
+import { TripAction } from "./tripsReducer";
 
-export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
+export default function Wishlist({
+  wishlist,
+  wishlistDispatch,
+}: {
+  wishlist: Trip[];
+  wishlistDispatch: (action: TripAction) => void;
+}) {
   const empty = (
     <tr>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -50,7 +57,16 @@ export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
                   {wishlist.length === 0
                     ? empty
                     : wishlist.map((trip) => (
-                        <Wish key={trip.id} trip={trip} />
+                        <Wish
+                          key={trip.id}
+                          trip={trip}
+                          deleteWish={() =>
+                            wishlistDispatch({
+                              type: "deleteItem",
+                              id: trip.id,
+                            })
+                          }
+                        />
                       ))}
                 </tbody>
                 <tfoot>
@@ -59,7 +75,12 @@ export default function Wishlist({ wishlist }: { wishlist: Array<Trip> }) {
                     <th scope="col" />
                     <th scope="col" />
                     <th scope="col">
-                      <button className="btn btn-outline-danger">
+                      <button
+                        className="btn btn-outline-danger"
+                        onClick={() =>
+                          wishlistDispatch({ type: "set", data: [] })
+                        }
+                      >
                         empty List
                       </button>
                     </th>
@@ -83,7 +104,7 @@ function formatTime(time: Trip["startTrip"]): string {
   return `${time[0]}-${padn2(time[1])}-${padn2(time[2])} ${hours}`;
 }
 
-function Wish({ trip }: { trip: Trip }) {
+function Wish({ trip, deleteWish }: { trip: Trip; deleteWish: () => void }) {
   return (
     <tr>
       <td>
@@ -127,10 +148,7 @@ function Wish({ trip }: { trip: Trip }) {
         </span>
       </td>
       <td className="text-right">
-        <button
-          className="btn btn-outline-danger"
-          // App deleteItem
-        >
+        <button className="btn btn-outline-danger" onClick={deleteWish}>
           delete Trip
         </button>
       </td>

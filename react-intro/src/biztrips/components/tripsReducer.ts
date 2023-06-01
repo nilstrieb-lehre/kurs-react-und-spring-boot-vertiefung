@@ -1,25 +1,28 @@
 import { Reducer } from "react";
 import { Trip } from "./tripsService";
 
-type Action =
-  | { type: "empty" }
+export type TripAction =
   | { type: "set"; data: Trip[] }
-  | { type: "add" }
-  | { type: "deleteItem" };
+  | { type: "add"; data: Trip }
+  | { type: "deleteItem"; id: number };
 
-const tripsReducer: Reducer<Trip[], Action> = (wishlist, action): Trip[] => {
+const tripsReducer: Reducer<Trip[], TripAction> = (
+  wishlist,
+  action
+): Trip[] => {
+  console.log(action);
+
   switch (action.type) {
-    case "empty":
-      return [];
     case "set":
       return action.data;
     case "add":
-      // deconstruing props
-      return [];
+      if (!wishlist.some((trip) => trip.id === action.data.id)) {
+        return [...wishlist, action.data];
+      } else {
+        return wishlist;
+      }
     case "deleteItem": {
-      // deconstructing action
-
-      return [];
+      return wishlist.filter((trip) => trip.id !== action.id);
     }
     default: {
       const unreachable = (_: never): never => _;
