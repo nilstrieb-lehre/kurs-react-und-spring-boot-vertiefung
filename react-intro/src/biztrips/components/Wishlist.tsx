@@ -1,15 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Trip } from "./tripsService";
-import { TripAction } from "./tripsReducer";
+import { WishlistContext } from "../wishlistContext";
 
-export default function Wishlist({
-  wishlist,
-  wishlistDispatch,
-}: {
-  wishlist: Trip[];
-  wishlistDispatch: (action: TripAction) => void;
-}) {
+export default function Wishlist() {
+  const { wishlist, wishlistDispatch } = useContext(WishlistContext);
+
   const empty = (
     <tr>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}

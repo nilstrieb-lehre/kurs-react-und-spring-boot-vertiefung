@@ -4,6 +4,7 @@ import Wishlist from "./components/Wishlist";
 import TripList from "./components/TripList";
 import { Trip, getWishlistItems } from "./components/tripsService";
 import tripsReducer from "./components/tripsReducer";
+import { WishlistContext } from "./wishlistContext";
 
 const initialWishlist: Trip[] = [
   {
@@ -72,17 +73,19 @@ export default function Biztrips() {
 
   return (
     <div className="container">
-      <header className="container h3">
-        Business Trips - Wishlist functional with JAVA & REACT
-        <h4>
-          Version-2 (using useReducer with pure functions instead of useState
-          (8))
-        </h4>
-      </header>
-      <Wishlist wishlist={wishlist} wishlistDispatch={wishlistDispatch} />
-      <TripList wishlistDispatch={wishlistDispatch} />
+      <WishlistContext.Provider value={{ wishlist, wishlistDispatch }}>
+        <header className="container h3">
+          Business Trips - Wishlist functional with JAVA & REACT
+          <h4>
+            Version-2 (using useReducer with pure functions instead of useState
+            (8))
+          </h4>
+        </header>
+        <Wishlist />
+        <TripList />
 
-      <footer>@AXA 2023</footer>
+        <footer>@AXA 2023</footer>
+      </WishlistContext.Provider>
     </div>
   );
 }

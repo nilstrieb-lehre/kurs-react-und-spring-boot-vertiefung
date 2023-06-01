@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getBusinessTrips, type Trip } from "./tripsService.ts";
-import { TripAction } from "./tripsReducer.ts";
+import { WishlistContext } from "../wishlistContext.ts";
 
 // functional component ProductList, deconstruct props!
-function TripList({
-  wishlistDispatch,
-}: {
-  wishlistDispatch: (action: TripAction) => void;
-}) {
+function TripList() {
+  const { wishlistDispatch } = useContext(WishlistContext);
   const [trips, setTrips] = useState<Trip[]>([]);
   // State
 
