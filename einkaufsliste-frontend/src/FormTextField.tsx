@@ -9,6 +9,7 @@ const FormTextField: React.FC<{
   placeholder: string;
 }> = ({ name, label, controlId, placeholder }) => (
   <Field name={name}>
+    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
     {({ field, form }: any) => {
       const isValid = !form.errors[field.name];
       const isInvalid = form.touched[field.name] && !isValid;

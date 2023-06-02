@@ -1,12 +1,10 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { useLocalState as useLocalStorageState } from "./useLocalState";
 import ShoppingList from "./ShoppingList";
-import { useCallback, useState } from "react";
-import CreateListModal, {
-  CloseAction as CreateCloseAction,
-} from "./CreateListModal";
+import { useCallback } from "react";
+import CreateListModal from "./CreateListModal";
 import { createList } from "./shopping-list-service";
-import JoinListModal, { CloseAction as JoinCloseAction } from "./JoinListModal";
+import JoinListModal from "./JoinListModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -17,27 +15,16 @@ function App() {
     "shoppingLists"
   );
 
-  const [isAddingList, setIsAddingList] = useState(false);
-  const [isJoiningList, setIsJoiningList] = useState(false);
-
-  const onCreateListClose = useCallback(
-    (action: CreateCloseAction) => {
-      setIsAddingList(false);
-      if (action.type === "cancel") {
-        return;
-      }
-      createList(action.name).then((list) => setLists([...lists, list.id]));
+  const onCreateList = useCallback(
+    (name: string) => {
+      createList(name).then((list) => setLists([...lists, list.id]));
     },
     [lists, setLists]
   );
 
   const onJoinListClose = useCallback(
-    (action: JoinCloseAction) => {
-      setIsJoiningList(false);
-      if (action.type === "cancel") {
-        return;
-      }
-      setLists([...lists, action.id]);
+    (id: string) => {
+      setLists([...lists, id]);
     },
     [lists, setLists]
   );
@@ -62,20 +49,8 @@ function App() {
         </Row>
         <Row>
           <Col>
-            <Button
-              variant="outline-primary"
-              onClick={() => setIsAddingList(true)}
-            >
-              create new list
-            </Button>
-            <Button
-              variant="outline-primary"
-              onClick={() => setIsJoiningList(true)}
-            >
-              join list
-            </Button>
-            <CreateListModal show={isAddingList} onClose={onCreateListClose} />
-            <JoinListModal show={isJoiningList} onClose={onJoinListClose} />
+            <CreateListModal onSubmit={onCreateList} />
+            <JoinListModal onSubmit={onJoinListClose} />
           </Col>
         </Row>
 

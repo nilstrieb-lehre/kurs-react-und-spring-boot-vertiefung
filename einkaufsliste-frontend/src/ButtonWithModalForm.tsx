@@ -52,14 +52,14 @@ function ButtonWithModalForm<T extends FormikValues>({
               <Modal.Body>{renderBody()}</Modal.Body>
 
               <Modal.Footer>
+                <Button variant="danger" onClick={onCancel}>
+                  cancel
+                </Button>{" "}
                 <input
                   type="submit"
                   className="btn btn-primary"
                   value="confirm"
                 ></input>
-                <Button variant="danger" onClick={onCancel}>
-                  cancel
-                </Button>
               </Modal.Footer>
             </Form>
           )}

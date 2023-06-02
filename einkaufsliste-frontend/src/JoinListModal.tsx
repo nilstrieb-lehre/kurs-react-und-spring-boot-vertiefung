@@ -1,65 +1,53 @@
-import { Button, Form, Modal } from "react-bootstrap";
-import { FormEvent } from "react";
+import { Button } from "react-bootstrap";
 import { useCallback } from "react";
+import ButtonWithModalForm, { CloseAction } from "./ButtonWithModalForm";
+import FormTextField from "./FormTextField";
 
-export type CloseAction = { type: "cancel" } | { type: "join"; id: string };
+const initialValues = { id: "" };
+type FormValues = { id: string };
+
+function validate(values: FormValues): Record<string, string> {
+  if (!values.id) {
+    return { id: "Required" };
+  }
+  return {};
+}
 
 const JoinListModal: React.FC<{
-  show: boolean;
-  onClose: (action: CloseAction) => void;
-}> = ({ show, onClose }) => {
-  const createList = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      const form = e.nativeEvent.target as HTMLFormElement;
-
-      const elems = form.elements as unknown as {
-        [name: string]: { value: string };
-      };
-      const id = elems["listId"].value;
-
-      if (!id) {
+  onSubmit: (id: string) => void;
+}> = ({ onSubmit }) => {
+  const onAction = useCallback(
+    (action: CloseAction<FormValues>) => {
+      if (action.type === "cancel") {
         return;
       }
 
-      onClose({ type: "join", id });
+      onSubmit(action.values.id);
     },
-    [onClose]
+    [onSubmit]
   );
 
-  const cancel = useCallback(() => onClose({ type: "cancel" }), [onClose]);
-
   return (
-    <div
-      className="modal show"
-      style={{ display: "block", position: "initial" }}
-    >
-      <Modal show={show} onHide={cancel}>
-        <Form onSubmit={createList}>
-          <Modal.Header>
-            <Modal.Title>Add item</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <Form.Group controlId="listId">
-              <Form.Label>ID</Form.Label>
-              <Form.Control type="text" placeholder="eg. 0000000000" />
-            </Form.Group>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <input
-              type="submit"
-              className="btn btn-primary"
-              value="confirm"
-            ></input>
-            <Button variant="danger" onClick={cancel}>
-              cancel
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
-    </div>
+    <ButtonWithModalForm<FormValues>
+      initialValues={initialValues}
+      onAction={onAction}
+      validate={validate}
+      renderButton={(onClick) => (
+        <Button variant="outline-primary" onClick={onClick}>
+          join list
+        </Button>
+      )}
+      renderBody={() => (
+        <>
+          <FormTextField
+            controlId="formikListJoinId"
+            label="ID"
+            placeholder="eg. 0000000000"
+            name="id"
+          />
+        </>
+      )}
+    />
   );
 };
 
