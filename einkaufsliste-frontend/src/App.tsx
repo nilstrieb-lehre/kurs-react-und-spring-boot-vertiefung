@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useLocalState as useLocalStorageState } from "./useLocalState";
 import ShoppingList from "./ShoppingList";
 import { useCallback } from "react";
@@ -17,7 +17,7 @@ function App() {
 
   const onCreateList = useCallback(
     (name: string) => {
-      createList(name).then((list) => setLists([...lists, list.id]));
+      createList(name).then((list) => setLists([...lists, list.list.id]));
     },
     [lists, setLists]
   );
@@ -55,15 +55,6 @@ function App() {
         </Row>
 
         <hr />
-        <Button
-          variant="outline-danger"
-          onClick={() => {
-            localStorage.removeItem("shoppingLists");
-            window.location.reload();
-          }}
-        >
-          debug: clear localstorage
-        </Button>
       </Container>
     </QueryClientProvider>
   );

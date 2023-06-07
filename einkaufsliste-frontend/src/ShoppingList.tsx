@@ -75,7 +75,7 @@ const ShoppingList: React.FC<{ id: string; removeList: () => void }> = ({
       <Button variant="outline-danger" onClick={removeList}>
         remove list
       </Button>
-      <AddItemModal onAdd={onModelClose} />
+      {query.data && <AddItemModal onAdd={onModelClose} />}
     </>
   );
 };

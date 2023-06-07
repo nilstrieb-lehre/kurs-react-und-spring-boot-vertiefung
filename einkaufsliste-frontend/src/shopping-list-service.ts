@@ -4,6 +4,11 @@ export type ShoppingList = {
   products: Product[];
 };
 
+export type User = {
+  id: string;
+  name: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -11,6 +16,21 @@ export type Product = {
   location: string;
   quantity: string;
   completed: boolean;
+};
+
+export type ListCreate = {
+  list: ShoppingList;
+  user: User;
+};
+
+export type ListCreateRes = {
+  list: ShoppingList;
+  user: UserCreateRes;
+};
+
+export type UserCreateRes = {
+  user: User;
+  token: string;
 };
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
@@ -28,9 +48,7 @@ export class FetchError {
   }
 }
 
-export async function getList(
-  id: string
-): Promise<ShoppingList | null> {
+export async function getList(id: string): Promise<ShoppingList | null> {
   const res = await fetch(
     `http://localhost:8080/shopping-list/${encodeURIComponent(id)}`
   );
@@ -43,8 +61,8 @@ export async function getList(
   return await res.json();
 }
 
-export async function createList(name: string): Promise<ShoppingList> {
-  const list: ShoppingList = { id: "", name, products: [] };
+export async function createList(name: string): Promise<ListCreateRes> {
+  const list: ListCreate = { list: { id: "", name, products: [] }, user: { id: "", name: "hans" } };
   return fetchApi(`/shopping-list`, {
     method: "POST",
     body: JSON.stringify(list),
@@ -58,7 +76,7 @@ export async function addProduct(
   id: string,
   product: Product
 ): Promise<ShoppingList> {
-  return fetchApi(`/shopping-list/${encodeURIComponent(id)}`, {
+  return fetchApi(`/shopping-list/${encodeURIComponent(id)}/products`, {
     method: "POST",
     body: JSON.stringify(product),
     headers: {
@@ -72,7 +90,7 @@ export async function editProduct(
   product: Product
 ): Promise<ShoppingList> {
   return fetchApi(
-    `/shopping-list/${encodeURIComponent(id)}/${encodeURIComponent(
+    `/shopping-list/${encodeURIComponent(id)}/products/${encodeURIComponent(
       product.id
     )}`,
     {
@@ -90,7 +108,9 @@ export async function deleteProduct(
   product: string
 ): Promise<ShoppingList> {
   return fetchApi(
-    `/shopping-list/${encodeURIComponent(id)}/${encodeURIComponent(product)}`,
+    `/shopping-list/${encodeURIComponent(id)}/products/${encodeURIComponent(
+      product
+    )}`,
     {
       method: "DELETE",
     }

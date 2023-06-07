@@ -49,7 +49,7 @@ const AddItemModal: React.FC<{
       validate={validate}
       renderButton={(onClick) => (
         <Button variant="outline-primary" onClick={onClick}>
-          add itemaaa
+          add item
         </Button>
       )}
       renderBody={() => (
