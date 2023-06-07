@@ -1,3 +1,5 @@
+import { JoinedList } from "./list";
+
 export type ShoppingList = {
   name: string;
   id: string;
@@ -35,6 +37,24 @@ export type UserCreateRes = {
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`http://localhost:8080${path}`, options);
+  if (!res.ok) {
+    throw Error(await res.text());
+  }
+  return res.json();
+}
+
+async function fetchApiAuth<T>(
+  token: string,
+  path: string,
+  options?: RequestInit
+): Promise<T> {
+  const res = await fetch(`http://localhost:8080${path}`, {
+    ...options,
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+  });
   if (!res.ok) {
     throw Error(await res.text());
   }
@@ -100,13 +120,14 @@ export async function addProduct(
 }
 
 export async function editProduct(
-  id: string,
+  list: JoinedList,
   product: Product
 ): Promise<ShoppingList> {
-  return fetchApi(
-    `/shopping-list/${encodeURIComponent(id)}/products/${encodeURIComponent(
-      product.id
-    )}`,
+  return fetchApiAuth(
+    list.token,
+    `/shopping-list/${encodeURIComponent(
+      list.id
+    )}/products/${encodeURIComponent(product.id)}`,
     {
       method: "PUT",
       body: JSON.stringify(product),

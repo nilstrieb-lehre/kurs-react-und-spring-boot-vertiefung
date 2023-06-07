@@ -7,6 +7,7 @@ import { createList, joinList } from "./shopping-list-service";
 import JoinListModal from "./JoinListModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { JoinedList } from "./list";
+import Register from "./Register";
 
 const queryClient = new QueryClient();
 
@@ -41,11 +42,17 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Container>
         <Row>
+          <br />
+          <Register />
+          <br />
+          <hr />
+        </Row>
+        <Row>
           <Col>
             {lists.map((list) => (
               <div key={list.id}>
                 <ShoppingList
-                  list={list}
+                  joinedList={list}
                   removeList={() =>
                     setLists(lists.filter((other) => other !== list))
                   }

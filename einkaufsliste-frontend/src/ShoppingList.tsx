@@ -10,19 +10,19 @@ import AddItemModal from "./AddItemModal";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { JoinedList } from "./list";
 
-const ShoppingList: React.FC<{ list: JoinedList; removeList: () => void }> = ({
-  list,
-  removeList,
-}) => {
+const ShoppingList: React.FC<{
+  joinedList: JoinedList;
+  removeList: () => void;
+}> = ({ joinedList, removeList }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ["wishlists", list.id],
-    queryFn: () => getList(list.id),
+    queryKey: ["wishlists", joinedList.id],
+    queryFn: () => getList(joinedList.id),
   });
 
   const onModelClose = (product: Product) => {
-    addProduct(list.id, product).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["wishlists", list.id] });
+    addProduct(joinedList.id, product).then(() => {
+      queryClient.invalidateQueries({ queryKey: ["wishlists", joinedList.id] });
     });
   };
 
@@ -32,12 +32,12 @@ const ShoppingList: React.FC<{ list: JoinedList; removeList: () => void }> = ({
   } else if (query.status === "error") {
     head = (
       <>
-        <h2>error fetching {list.id}</h2>
+        <h2>error fetching {joinedList.id}</h2>
         <div>{query.error as string}</div>
       </>
     );
   } else if (query.data === null) {
-    head = <h2>list not found ({list.id})</h2>;
+    head = <h2>list not found ({joinedList.id})</h2>;
   } else {
     const list = query.data;
 
@@ -53,13 +53,17 @@ const ShoppingList: React.FC<{ list: JoinedList; removeList: () => void }> = ({
               product={product}
               onCheck={(completed) => {
                 const newProduct = { ...product, completed };
-                editProduct(list.id, newProduct).then(() =>
-                  queryClient.invalidateQueries({ queryKey: ["wishlists", list.id] })
+                editProduct(joinedList, newProduct).then(() =>
+                  queryClient.invalidateQueries({
+                    queryKey: ["wishlists", list.id],
+                  })
                 );
               }}
               onDelete={() =>
                 deleteProduct(list.id, product.id).then(() =>
-                  queryClient.invalidateQueries({ queryKey: ["wishlists", list.id] })
+                  queryClient.invalidateQueries({
+                    queryKey: ["wishlists", list.id],
+                  })
                 )
               }
             />
