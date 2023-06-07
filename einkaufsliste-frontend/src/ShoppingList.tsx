@@ -14,15 +14,17 @@ const ShoppingList: React.FC<{
   joinedList: JoinedList;
   removeList: () => void;
 }> = ({ joinedList, removeList }) => {
+  const { id } = joinedList;
+
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ["wishlists", joinedList.id],
-    queryFn: () => getList(joinedList.id),
+    queryKey: ["wishlists", id],
+    queryFn: () => getList(id),
   });
 
   const onModelClose = (product: Product) => {
-    addProduct(joinedList.id, product).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["wishlists", joinedList.id] });
+    addProduct(id, product).then(() => {
+      queryClient.invalidateQueries({ queryKey: ["wishlists", id] });
     });
   };
 
@@ -32,12 +34,12 @@ const ShoppingList: React.FC<{
   } else if (query.status === "error") {
     head = (
       <>
-        <h2>error fetching {joinedList.id}</h2>
+        <h2>error fetching {id}</h2>
         <div>{query.error as string}</div>
       </>
     );
   } else if (query.data === null) {
-    head = <h2>list not found ({joinedList.id})</h2>;
+    head = <h2>list not found ({id})</h2>;
   } else {
     const list = query.data;
 
@@ -53,11 +55,11 @@ const ShoppingList: React.FC<{
               product={product}
               onCheck={(completed) => {
                 const newProduct = { ...product, completed };
-                editProduct(joinedList, newProduct).then(() =>
+                editProduct(joinedList, newProduct).then(() => {
                   queryClient.invalidateQueries({
                     queryKey: ["wishlists", list.id],
-                  })
-                );
+                  });
+                });
               }}
               onDelete={() =>
                 deleteProduct(list.id, product.id).then(() =>

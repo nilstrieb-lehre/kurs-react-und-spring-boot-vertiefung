@@ -1,12 +1,12 @@
 import { useFormik } from "formik";
 import { Alert, Container, Form, Row } from "react-bootstrap";
-import { register } from "./auth-service";
+import { login } from "./auth-service";
 import { useState } from "react";
 
-const Register: React.FC<{ setToken: (token: string) => void }> = ({
+const Login: React.FC<{ setToken: (token: string) => void }> = ({
   setToken,
 }) => {
-  const [hasError, setHasError] = useState(false);
+  const [hasErrors, setHasErrors] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -14,11 +14,11 @@ const Register: React.FC<{ setToken: (token: string) => void }> = ({
       password: "",
     },
     onSubmit: ({ username, password }) => {
-      register(username, password).then((res) => {
-        if (res === "username-exists-already") {
-          setHasError(true);
+      login(username, password).then((res) => {
+        if (res === null) {
+          setHasErrors(true);
         } else {
-          setHasError(false);
+          setHasErrors(false);
           setToken(res.token);
         }
       });
@@ -28,7 +28,7 @@ const Register: React.FC<{ setToken: (token: string) => void }> = ({
   return (
     <Container>
       <Row>
-        <h1>Register</h1>
+        <h1>Login</h1>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="registerUsername">
             <Form.Label>Username</Form.Label>
@@ -50,7 +50,9 @@ const Register: React.FC<{ setToken: (token: string) => void }> = ({
               value={formik.values.password}
             />
           </Form.Group>
-          {hasError && <Alert variant="danger">username already exists</Alert>}
+          {hasErrors && (
+            <Alert variant="danger">Invalid username or password</Alert>
+          )}
           <br />
           <input type="submit" className="btn btn-primary" />
         </Form>
@@ -59,4 +61,4 @@ const Register: React.FC<{ setToken: (token: string) => void }> = ({
   );
 };
 
-export default Register;
+export default Login;

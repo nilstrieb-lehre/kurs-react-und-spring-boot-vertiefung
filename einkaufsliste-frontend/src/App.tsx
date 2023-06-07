@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { useLocalState as useLocalStorageState } from "./useLocalState";
 import ShoppingList from "./ShoppingList";
 import { useCallback } from "react";
@@ -8,14 +8,18 @@ import JoinListModal from "./JoinListModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { JoinedList } from "./list";
 import Register from "./Register";
+import Login from "./Login";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient();
 
 function App() {
+  const [token, setToken] = useLocalStorageState<string | null>(null, "token");
+
   const [lists, setLists] = useLocalStorageState<JoinedList[]>(
     [
-      { id: "TEST1", token: "" },
-      { id: "TEST2", token: "" },
+      { id: "TEST1", token: "0097bbaf-3331-4c1d-8ba9-63db06949a54" },
+      { id: "TEST2", token: "1097bbaf-3331-4c1d-8ba9-63db06949a54" },
     ],
     "shoppingLists"
   );
@@ -40,13 +44,22 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false}/>
       <Container>
-        <Row>
-          <br />
-          <Register />
-          <br />
-          <hr />
-        </Row>
+        {token === null ? (
+          <Row>
+            <br />
+            <Register setToken={setToken} />
+            <Login setToken={setToken} />
+          </Row>
+        ) : (
+          <Row>
+            <h1>you are logged in!</h1>
+            <Button onClick={() => setToken(null)}>log out</Button>
+          </Row>
+        )}
+        <br />
+        <hr />
         <Row>
           <Col>
             {lists.map((list) => (
