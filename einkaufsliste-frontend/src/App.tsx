@@ -3,28 +3,36 @@ import { useLocalState as useLocalStorageState } from "./useLocalState";
 import ShoppingList from "./ShoppingList";
 import { useCallback } from "react";
 import CreateListModal from "./CreateListModal";
-import { createList } from "./shopping-list-service";
+import { createList, joinList } from "./shopping-list-service";
 import JoinListModal from "./JoinListModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { JoinedList } from "./list";
 
 const queryClient = new QueryClient();
 
 function App() {
-  const [lists, setLists] = useLocalStorageState<string[]>(
-    ["TEST1", "TEST2"],
+  const [lists, setLists] = useLocalStorageState<JoinedList[]>(
+    [
+      { id: "TEST1", token: "" },
+      { id: "TEST2", token: "" },
+    ],
     "shoppingLists"
   );
 
   const onCreateList = useCallback(
     (name: string) => {
-      createList(name).then((list) => setLists([...lists, list.list.id]));
+      createList(name).then((list) =>
+        setLists([...lists, { id: list.list.id, token: list.user.token }])
+      );
     },
     [lists, setLists]
   );
 
   const onJoinListClose = useCallback(
     (id: string) => {
-      setLists([...lists, id]);
+      joinList(id).then((join) => {
+        setLists([...lists, { id, token: join.token }]);
+      });
     },
     [lists, setLists]
   );
@@ -35,9 +43,9 @@ function App() {
         <Row>
           <Col>
             {lists.map((list) => (
-              <div key={list}>
+              <div key={list.id}>
                 <ShoppingList
-                  id={list}
+                  list={list}
                   removeList={() =>
                     setLists(lists.filter((other) => other !== list))
                   }

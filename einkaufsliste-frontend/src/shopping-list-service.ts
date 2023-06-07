@@ -62,10 +62,24 @@ export async function getList(id: string): Promise<ShoppingList | null> {
 }
 
 export async function createList(name: string): Promise<ListCreateRes> {
-  const list: ListCreate = { list: { id: "", name, products: [] }, user: { id: "", name: "hans" } };
+  const list: ListCreate = {
+    list: { id: "", name, products: [] },
+    user: { id: "", name: "hans" },
+  };
   return fetchApi(`/shopping-list`, {
     method: "POST",
     body: JSON.stringify(list),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export async function joinList(id: string): Promise<UserCreateRes> {
+  const user: User = { id: "", name: "hans" };
+  return fetchApi(`/shopping-list/${encodeURIComponent(id)}`, {
+    method: "POST",
+    body: JSON.stringify(user),
     headers: {
       "Content-Type": "application/json",
     },
