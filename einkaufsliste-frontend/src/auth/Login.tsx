@@ -30,7 +30,7 @@ const Login: React.FC<{ setToken: (token: string) => void }> = ({
       <Row>
         <h1>Login</h1>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group controlId="registerUsername">
+          <Form.Group controlId="loginUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               placeholder="Enter username"
@@ -40,7 +40,7 @@ const Login: React.FC<{ setToken: (token: string) => void }> = ({
               value={formik.values.username}
             />
           </Form.Group>
-          <Form.Group controlId="registerPassword">
+          <Form.Group controlId="loginPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               placeholder="Enter password"

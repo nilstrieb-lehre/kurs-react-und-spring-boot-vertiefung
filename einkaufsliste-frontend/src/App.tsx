@@ -1,14 +1,14 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { useLocalState as useLocalStorageState } from "./useLocalState";
-import ShoppingList from "./ShoppingList";
+import ShoppingList from "./shopping-list/ShoppingList";
 import { useCallback } from "react";
-import CreateListModal from "./CreateListModal";
-import { createList, joinList } from "./shopping-list-service";
-import JoinListModal from "./JoinListModal";
+import CreateListModal from "./shopping-list/CreateListModal";
+import { createList, joinList } from "./shopping-list/shopping-list-service";
+import JoinListModal from "./shopping-list/JoinListModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { JoinedList } from "./list";
-import Register from "./Register";
-import Login from "./Login";
+import { JoinedList } from "./shopping-list/list";
+import Register from "./auth/Register";
+import Login from "./auth/Login";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient();
