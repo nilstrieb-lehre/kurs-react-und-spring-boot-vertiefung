@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getBusinessTrips, type Trip } from "./tripsService";
-import { useWishlist } from "../wishlistContext";
+import { useWishlist } from "./wishlistContext";
 
 // functional component ProductList, deconstruct props!
 function TripList() {

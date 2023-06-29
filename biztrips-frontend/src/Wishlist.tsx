@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Trip } from "./tripsService";
-import { useWishlist } from "../wishlistContext";
+import { useWishlist } from "./wishlistContext";
 
 export default function Wishlist() {
   const { wishlist, wishlistDispatch } = useWishlist();

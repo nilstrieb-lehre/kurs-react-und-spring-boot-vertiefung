@@ -1,5 +1,5 @@
-import Wishlist from "./components/Wishlist";
-import TripList from "./components/TripList";
+import Wishlist from "./Wishlist";
+import TripList from "./TripList";
 import { WishlistProvider } from "./wishlistContext";
 
 export default function Biztrips() {
